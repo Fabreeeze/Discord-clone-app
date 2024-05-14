@@ -3,9 +3,11 @@ import { redirect } from "next/navigation";
 import {db } from "@/lib/db";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ModeToggle } from "@/components/mode-toggle";
 
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
+import { UserButton } from "@clerk/nextjs";
 
 export const NavigationSidebar = async () => {
     //since sidebar is a component of the server, which takes time to load
@@ -45,6 +47,15 @@ export const NavigationSidebar = async () => {
                 ))
             }
             </ScrollArea>
+            <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
+                <ModeToggle></ModeToggle>
+                <UserButton afterSignOutUrl="/"
+                appearance={{
+                    elements:{
+                        avatarBox: "h-[48px] w-[48px]"
+                    }
+                }}></UserButton>
+            </div>
         </div>
     )
 }
