@@ -69,6 +69,8 @@ export const CreateServerModal = () => {
 
             router.refresh();
 
+            onClose();
+
         }
         catch (err){
             console.log(err);
