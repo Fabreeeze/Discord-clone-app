@@ -35,10 +35,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatar } from "@/components/user-avatar";
 import { MemberRole } from "@prisma/client";
 
-
+import qs from "query-string";
+import { stringify } from "querystring";
 
 export const MembersModal = () => {
-
+    const router = useRouter();
     const {onOpen , isOpen , onClose, type,data}= useModal();
 
     const [loadingId, setLoadingId] = useState("");
@@ -48,7 +49,34 @@ export const MembersModal = () => {
     const {server} = data as {server: ServerWithMembersWithProfiles}
     // we do this data type redefining because we need to do server.members somewhere in below code  
 
-    
+    const onRoleChange = async(memberId: string , role: MemberRole) => {
+        try{
+            setLoadingId(memberId);
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server?.id,
+                    // memberId,
+                    // we comment out memberId as we already sending it thru url above
+                    // the url whose path and code written in app/api/members/[memberId]/route.ts
+                }
+            })    
+
+            const response = await axios.patch(url, {role});
+            // patch is for editing databse data as usual
+            // url is where we make to do the Changa_One, and obeject with role is the change we need to do 
+
+            router.refresh();
+            onOpen("members",{server: response.data})
+        }
+        catch(err){
+            console.log(err);
+        }
+        finally{
+            setLoadingId("");
+        }
+        
+    }
 
 
     const roleIconMap = {
@@ -115,7 +143,9 @@ export const MembersModal = () => {
                                                 </DropdownMenuSubTrigger>
                                                 <DropdownMenuPortal>
                                                     <DropdownMenuSubContent>
-                                                        <DropdownMenuItem >
+                                                        <DropdownMenuItem onClick={ 
+                                                            () => onRoleChange(member.id, "GUEST")}
+                                                            >
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Guest
                                                             {member.role === "GUEST" && (
@@ -124,10 +154,12 @@ export const MembersModal = () => {
                                                             )}
                                                         </DropdownMenuItem>
 
-                                                        <DropdownMenuItem >
+                                                        <DropdownMenuItem onClick={ 
+                                                            () => onRoleChange(member.id, "MODERATOR")}
+                                                            >
                                                             <ShieldCheck className="h-4 w-4 mr-2" />
                                                             Moderator
-                                                            {member.role === "Moderator" && (
+                                                            {member.role === "MODERATOR" && (
                                                                 <Check className="h-4 w-4 ml-auto"/>
                                                                 // display a tick if member already guest
                                                             )}
