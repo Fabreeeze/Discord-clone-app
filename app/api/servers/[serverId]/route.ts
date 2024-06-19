@@ -40,3 +40,39 @@ export async function PATCH(
 
 
 // this file is for edit server/ server setting post function route
+
+
+
+
+
+
+// this below code is for deleting a server 
+
+export async function DELETE(
+    req:Request,
+    {params}: {params: {serverId: string }}
+){
+    try{
+        const profile = await currentProfile();
+        if( !profile ){
+            return new NextResponse("Unauthorized", {status:401});
+        }
+        if(!params.serverId){
+            return new NextResponse("Server ID missing", {status:400});
+        }
+        console.log("jeered serevrid = ",params.serverId);
+        const server = await db.server.delete({
+            where:{
+                id: params.serverId,
+                profileId:profile.id,
+            }
+        });
+        console.log("response = ",server);
+
+        return NextResponse.json(server);
+    }
+    catch(err){
+        console.log("[SERVER_ID_DELETE]",err);
+        return new NextResponse("Internal Error 500", {status:500});
+    }
+}

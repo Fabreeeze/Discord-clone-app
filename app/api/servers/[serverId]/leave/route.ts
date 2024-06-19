@@ -32,6 +32,8 @@ export async function PATCH(
             },
             data:{
                 members:{
+                    // data provided here means profile.id 
+                    // is some members id and not admins
                     deleteMany:{
                         profileId:profile.id
                     }
