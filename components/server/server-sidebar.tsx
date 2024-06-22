@@ -108,7 +108,7 @@ export const ServerSidebar = async ({
                             type: "member",
                             data: members?.map( (member) => ({
                                 id: member.id,
-                                name: member.name,
+                                name: member.role,
                                 icon: roleIconMap[member.role],
                             }))
                         },
