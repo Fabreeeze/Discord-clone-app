@@ -33,7 +33,7 @@ export const ServerMember =({
     // console.log("icon= ",icon);
 
     const onClick = () => {
-        router.push(`/server/${params?.serverId}/conversations/${member.id}`);
+        router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
     }
     // this function is to redirect to a personal chat page when click on a server members icon
 
