@@ -7,6 +7,7 @@ import { Loader2 ,ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
@@ -42,6 +43,13 @@ export const ChatMessages = ({
 }: ChatMessagesProps) => {
 
     const queryKey = `chat:${chatId}`;
+    // addess of channel maybe/chat ^
+    const addKey = `chat:${chatId}:messages`;
+    // for ^ messaging
+    const updateKey = `chat:${chatId}:messages:update`;
+    // for deleting/editing ^
+    // the keys should be addressed accordingly to what we have 
+    // named our pages/api/socket/messages folder etc 
 
     const {
         data,
@@ -55,6 +63,9 @@ export const ChatMessages = ({
         paramKey,
         paramValue
     });
+
+
+    useChatSocket( { queryKey , addKey , updateKey});
 
     if( status === "loading") {
         return (
@@ -100,7 +111,7 @@ export const ChatMessages = ({
                                     member={message.member}
                                     content={message.content}
                                     fileUrl={message.fileUrl}
-                                    deleted={message.deleted}
+                                    deleted={message.delete}
                                     timestamp={format(new Date(message.createdAt) , DATE_FORMAT)}
                                     isUpdated={message.updatedAt !== message.createdAt}
                                     socketUrl={socketUrl}

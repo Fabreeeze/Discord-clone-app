@@ -100,3 +100,4 @@ import { db } from "@/lib/db";
         return res.status(500).json({message : "Internal Error"});
     }
 }
+

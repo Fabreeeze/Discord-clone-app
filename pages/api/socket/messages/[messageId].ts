@@ -13,7 +13,7 @@ export default async function handler(
 
     // console.log("\n\n\n\n\n\nreq.method === ",req.method,"\n\n\n\n\n")
     if( req.method !== "DELETE" && req.method !== "PATCH"){
-        return res.status(500).json({error: "Method not allowed"});
+        return res.status(405).json({error: "Method not allowed"});
     }
 
     try{
@@ -155,7 +155,7 @@ export default async function handler(
         return res.status(200).json(message);
     }
     catch(err){
-        console.log(err);
+        console.log(,"[MESSAGE_ID]",err);
         return res.status(500).json({error:"Internal Error"});
     }
 }

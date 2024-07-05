@@ -1,9 +1,7 @@
 import qs from "query-string";
-import { useParams } from "next/navigation";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { useSocket } from "@/components/providers/socket-provider";
-import { escape } from "querystring";
 
 interface ChatQueryProps{
     queryKey: string;
@@ -20,7 +18,6 @@ export const useChatQuery = ({
 }: ChatQueryProps) => {
 
     const {isConnected} = useSocket();
-    const params = useParams();
 
     // pageParam is kind of our cursor
     const fetchMessages = async({ pageParam = undefined  }) => {
@@ -29,7 +26,7 @@ export const useChatQuery = ({
             query:{
                 cursor: pageParam,
                 [paramKey] : paramValue,
-            } 
+            }, 
         }, {skipNull : true});
 
         const res = await fetch(url);
@@ -42,16 +39,16 @@ export const useChatQuery = ({
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        status, 
+        status
     } = useInfiniteQuery({
         queryKey: [queryKey],
         queryFn: fetchMessages,
         getNextPageParam: (lastPage) => lastPage?.nextCursor,
         refetchInterval: isConnected ? false : 1000,
-        // above line tells that do polling only if 
-        // socket.io is not connected, and polling 
-        // hapens at 1000ms interval
-     });
+    });
+    // above line tells that do polling only if 
+    // socket.io is not connected, and polling 
+    // hapens at 1000ms interval
     
      return {
         data,
@@ -59,5 +56,5 @@ export const useChatQuery = ({
         hasNextPage,
         isFetchingNextPage,
         status,
-     }
-}
+     };
+};
