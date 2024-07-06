@@ -217,8 +217,7 @@ export const ChatItem = ({
                         <Form {...form} >
                             <form
                                 className="flex items-center w-full gap-x-2 pt-2"
-                                onSubmit={form.handleSubmit(onSubmit)();
-                                }}
+                                onSubmit={form.handleSubmit(onSubmit)}
                             >
 
                                 <FormField 

@@ -155,7 +155,7 @@ export default async function handler(
         return res.status(200).json(message);
     }
     catch(err){
-        console.log(,"[MESSAGE_ID]",err);
+        console.log("[MESSAGE_ID]",err);
         return res.status(500).json({error:"Internal Error"});
     }
 }
