@@ -27,13 +27,13 @@ export const useChatSocket = ({
         if( !socket ){
             return;
         }
-        console.log("\n\n\n\n\n\n addkey=",addKey,"\nupdateKey= ",updateKey,"\nqueryKey=",queryKey,"\nsocket=",socket
-            ,"\nqueryClient=",queryClient
-        )
+        // console.log("\n\n\n\n\n\n addkey=",addKey,"\nupdateKey= ",updateKey,"\nqueryKey=",queryKey,"\nsocket=",socket
+        //     ,"\nqueryClient=",queryClient
+        // )
 
         // now we create a socket method to delete or update message in real time
         socket.on(updateKey, (message:MessageWithMemberWithProfile) => {
-            queryClient.setQueryData([queryKey], (oldData: any) => {
+            queryClient.setQueryData<MessageWithMemberWithProfile[]>([queryKey], (oldData: any) => {
                 if( !oldData || !oldData.pages ||oldData.pages.length === 0 ){
                     return oldData;
                     // ie if oldData(data to be modified/deleted) is already emmpty
@@ -67,12 +67,13 @@ export const useChatSocket = ({
 
         // this below socket is for adding new messsages in chat
         socket.on(addKey, (message: MessageWithMemberWithProfile) => {
-            queryClient.setQueryData([queryKey] , (oldData:any) => {
+            queryClient.setQueryData<MessageWithMemberWithProfile[]>([queryKey] , (oldData:any) => {
                 if( !oldData || !oldData.pages ||oldData.pages.length === 0 ){
                     return {
                         pages:[
                             {
                             items: [message],
+                            nextCursor:null,
                             },
                         ],
                     };  
@@ -85,9 +86,9 @@ export const useChatSocket = ({
                 newData[0] = {
                     ...newData[0],
                     items:[
-                        ...newData[0].items,
                         message,
-                    ]
+                        ...newData[0].items,
+                    ],
                 }
                 // const newData = oldData.pages.map((page: any) => ({
                 //     ...page,

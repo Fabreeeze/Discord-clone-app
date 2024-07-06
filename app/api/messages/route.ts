@@ -48,7 +48,7 @@ export async function GET(
                 },
                 // we include profile so as to render details of message like sender,  receiver etc 
                 orderBy:{
-                    createdAt:"asc",
+                    createdAt:"desc",
                 }    
             });
         }
@@ -66,7 +66,7 @@ export async function GET(
                     }
                 },
                 orderBy:{
-                    createdAt:"asc",
+                    createdAt:"desc",
                 }
             });
         }

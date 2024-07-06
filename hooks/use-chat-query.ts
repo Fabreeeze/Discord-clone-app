@@ -46,6 +46,7 @@ export const useChatQuery = ({
         getNextPageParam: (lastPage) => lastPage?.nextCursor,
         refetchInterval: isConnected ? false : 1000,
     });
+    // initialPageParam: 1,
     // above line tells that do polling only if 
     // socket.io is not connected, and polling 
     // hapens at 1000ms interval
