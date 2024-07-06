@@ -4,10 +4,11 @@ import { Member, Message, Profile } from "@prisma/client";
 import { ChatWelcome } from "./chat-welcome";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2 ,ServerCrash } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment , useRef,ElementRef } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
 import { useChatSocket } from "@/hooks/use-chat-socket";
+import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
@@ -27,7 +28,7 @@ interface ChatMessagesProps{
     socketQuery: Record<string,string>;
     paramKey: "channelId" | "conversationId";
     paramValue: string;
-    type: "channel" | "converstion";
+    type: "channel" | "conversation";
 }
 
 export const ChatMessages = ({
@@ -51,6 +52,11 @@ export const ChatMessages = ({
     // the keys should be addressed accordingly to what we have 
     // named our pages/api/socket/messages folder etc 
 
+
+    const chatRef = useRef<ElementRef<"div">>(null);
+    const bottomRef = useRef<ElementRef<"div">>(null);
+
+
     const {
         data,
         fetchNextPage,
@@ -66,6 +72,14 @@ export const ChatMessages = ({
 
 
     useChatSocket( { queryKey , addKey , updateKey});
+
+    useChatScroll( {
+        chatRef ,
+        bottomRef,
+        loadMore:fetchNextPage,
+        shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+        count: data?.pages?.[0]?.items?.length ?? 0,
+    })
 
     if( status === "loading") {
         return (
@@ -90,14 +104,35 @@ export const ChatMessages = ({
     }
 
     return (
-        <div className="flex-1 flex flex-col py-4 overflow-y-auto">
-            <div className="flex-1">
+        <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
+            { !hasNextPage && <div className="flex-1" /> }
+
             {/* we do flex-1 so as to cover entire length */}
-                <ChatWelcome
+            
+            {!hasNextPage && ( <ChatWelcome
                     type={type}
                     name={name}
                 />
-                <div className="flex flex-col mt-auto">
+            )}
+            {/* we only want to display chat welcome when we are at last page, i.e on chat top */}
+
+            {hasNextPage && (
+                <div className="flex justify-center">
+                    {isFetchingNextPage ? (
+                        <Loader2 className="h-6 w-6  text-zinc-500 animate-spin my-4" />
+                    ) :   (
+                        <button 
+                            onClick={()=>fetchNextPage()}
+                            className="text-zinc-500 dark:Text-zinc-400 hover:text-zinc-600 text-xs my-4 dark:hover:text-zinc-300 transition">
+                            Load Previous Messages!
+                        </button>
+                    )
+                
+                }
+                </div>
+            )}
+
+                <div className="flex flex-col-reverse mt-auto">
                 {/* flec-col-reverse was rendering the content as is stored in database 
                 not like how we want where latest message is at bottom and oldest at top */}
                     {data?.pages?.map( ( group , i ) => (
@@ -124,7 +159,8 @@ export const ChatMessages = ({
                     ))}
                 
                 </div>
-            </div>
+                <div ref={bottomRef} />
+
         </div>
 
     )
