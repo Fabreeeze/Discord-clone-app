@@ -20,7 +20,7 @@ export const useChatQuery = ({
     const {isConnected} = useSocket();
 
     // pageParam is kind of our cursor
-    const fetchMessages = async({ pageParam = undefined  }) => {
+    const fetchMessages = async({ pageParam } : {pageParam?:string|number} = {}) => {
         const url = qs.stringifyUrl({
             url:apiUrl,
             query:{
@@ -44,10 +44,10 @@ export const useChatQuery = ({
     } = useInfiniteQuery({
         queryKey: [queryKey],
         queryFn: fetchMessages,
+        initialPageParam: undefined,
         getNextPageParam: (lastPage) => lastPage?.nextCursor,
         refetchInterval: isConnected ? false : 1000,
     });
-    // initialPageParam: 1,
     // above line tells that do polling only if 
     // socket.io is not connected, and polling 
     // hapens at 1000ms interval
