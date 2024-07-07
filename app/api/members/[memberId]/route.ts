@@ -60,7 +60,7 @@ export async function DELETE(
 
 export async function PATCH(
     req:Request,
-    {params} : {params : {memberId:String}}
+    {params} : {params : {memberId:string}}
 ) {
     try{
         const profile = await currentProfile();

@@ -59,10 +59,11 @@ export const ChatMessages = ({
 
     const {
         data,
+        status,
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        status
+        isFetching,
     } = useChatQuery({
         queryKey,
         apiUrl,
@@ -81,7 +82,7 @@ export const ChatMessages = ({
         count: data?.pages?.[0]?.items?.length ?? 0,
     })
 
-    if( status === "loading") {
+    if( isFetching && !isFetchingNextPage) {
         return (
             <div className="flex flexcol flex-1 justify-center items-center">
                 <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
