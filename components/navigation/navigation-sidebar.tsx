@@ -1,6 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import { redirect } from "next/navigation";
-import {db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
