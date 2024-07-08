@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "railway-build": "prisma generate && prisma migrate deploy && next build && railway run -- 'npm start'",
+  
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.12",
