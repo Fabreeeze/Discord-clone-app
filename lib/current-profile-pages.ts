@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 
 // we modify this auth from auth to getAuth anduse req as NextApiRequest 
 // coz it wont work in pages folder and foles for 

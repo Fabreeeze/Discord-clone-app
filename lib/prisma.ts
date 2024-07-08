@@ -1,13 +1,15 @@
-import { PrismaClient } from '@prisma/client';
+import {PrismaClient} from "@prisma/client";
 
-declare global {
-  // Allow global `var` declarations
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
+declare global{
+    var prisma: PrismaClient | undefined ;
 }
 
-const prisma = global.prisma || new PrismaClient();
+export const db = globalThis.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
+if( process.env.NODE_ENV !== "production"){
+    globalThis.prisma = db
+}
 
-export default prisma;
+// what exactly this export and if block codes do are that globalThis isnt affected by hot reload
+// so if we have just exported out new PrismaClient() on every save or Refres, we would have had so many open 
+// connections, this code ensures new connection made only if there is no other connection available

@@ -1,11 +1,11 @@
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
 import { ChatMessages } from "@/components/chat/chat-messages";
-import { ChannelType } from "@prisma/client";
+import { ChannelType } from "@/node_modules/.prisma/client";
 import { MediaRoom } from "@/components/media-room";
 
 interface ChannelIdPageProps {

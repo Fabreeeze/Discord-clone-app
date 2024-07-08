@@ -2,7 +2,7 @@ import { currentProfilePages } from "@/lib/current-profile-pages";
 import { NextApiResponseServerIo } from "@/types";
 import { error } from "console";
 import { NextApiRequest } from "next";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 
 
  export default async function handler (

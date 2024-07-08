@@ -1,6 +1,6 @@
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ChatHeader } from "@/components/chat/chat-header";

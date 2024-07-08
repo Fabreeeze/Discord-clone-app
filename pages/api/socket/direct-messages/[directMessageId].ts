@@ -1,6 +1,6 @@
 
 import { currentProfilePages } from "@/lib/current-profile-pages";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { NextApiResponseServerIo } from "@/types";
 import { MemberRole } from "@prisma/client";
 import { error } from "console";

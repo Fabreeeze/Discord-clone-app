@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { Server } from "lucide-react";
 import { NextResponse } from "next/server";
 import { json } from "stream/consumers";

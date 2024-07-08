@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { ServerHeader } from "./server-header";
